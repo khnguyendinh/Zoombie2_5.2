@@ -10,34 +10,27 @@ public class ControlHero : MonoBehaviour
     public Animator animator;
     public GameObject muzzeLight;
     public GameObject hero;
-    public GameObject spriteRender;
     private bool flipped = false;
-    // Use this for initialization
     void Start()
     {
         controller = GetComponent<CharacterController>();
     }
 
-    // Update is called once per frame
     void Update() {
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") ,0 );
-            moveDirection = transform.TransformDirection(moveDirection);
             moveDirection *= speed;
             if (checkBound(moveDirection * Time.deltaTime))
             {
-
-                if (moveDirection.x > 0 && spriteRender.GetComponent<SpriteRenderer>().flipX == true)
-                {
-                    spriteRender.GetComponent<SpriteRenderer>().flipX = false;
-                    muzzeLight.GetComponent<SpriteRenderer>().flipX = false;
-
-                }
-                if (moveDirection.x < 0 && spriteRender.GetComponent<SpriteRenderer>().flipX == false)
-                {
-                    spriteRender.GetComponent<SpriteRenderer>().flipX = true;
-                    muzzeLight.GetComponent<SpriteRenderer>().flipX = true;
-                }
                 controller.Move(moveDirection * Time.deltaTime);
+                if (moveDirection.x > 0 && hero.transform.localScale.x == -1)
+                {
+                    hero.transform.localScale = new Vector3(1, 1, 1);
+                }
+                if (moveDirection.x < 0 && hero.transform.localScale.x == 1)
+                {
+                    hero.transform.localScale = new Vector3(-1, 1, 1);
+                }
+                
             }
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) ||
                 Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
